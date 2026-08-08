@@ -45,14 +45,16 @@ public class LearnMultithreadingApplication {
     }
 
     static void learnFuture() throws ExecutionException, InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-        try (ExecutorService executorService = Executors.newFixedThreadPool(4)) {
-
+        try {
             Future<String> myNameFuture = executorService.submit(() -> getName());
-
             myNameFuture.get(); // block the calling thread
             log.info("After nameFuture: {}", Thread.currentThread().getState());
+        }finally {
+            executorService.shutdown();
         }
+
     }
 
 
@@ -94,7 +96,7 @@ public class LearnMultithreadingApplication {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return "Anuj";
+        return "MD";
     }
 
     static String getAddress() {

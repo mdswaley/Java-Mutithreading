@@ -16,17 +16,19 @@ public class DummyController {
     @GetMapping("/hello")
     public ResponseEntity<String> getName() throws InterruptedException {
 
+// if you get 1000 req per sec then this method is choked and not able to handle all of that request.
         log.info("Thread is blocked");
 
         Thread.sleep(5000);
 
-        return ResponseEntity.ok("Anuj");
+        return ResponseEntity.ok("MD");
 //        By default, tomcat server use 200 thread which will run concurrently
     }
 
     @GetMapping("/hello-cf")
     public CompletableFuture<ResponseEntity<String>> getNameCF() throws InterruptedException {
 
+//      Here bcz of CompletableFuture request is continue bcz once thread is free it will be able to handle other request.
         log.info("Thread is called");
 
         return CompletableFuture.supplyAsync(() -> {
@@ -36,7 +38,7 @@ public class DummyController {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            return ResponseEntity.ok("Anuj");
+            return ResponseEntity.ok("MD");
         }, Executors.newFixedThreadPool(4));
     }
 }

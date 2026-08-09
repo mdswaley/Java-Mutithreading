@@ -68,7 +68,7 @@ public class LearnMultithreadingApplication {
                 .supplyAsync(() -> getName())
                 .thenApply(name -> name.toUpperCase())
                 .thenApply(upperCaseName -> upperCaseName.length())
-                .thenApplyAsync(lengthOfName -> {
+                .thenApplyAsync(lengthOfName -> {  // this will work on separate thread. but  currently previous thread was free then it can use same thread.
                     log.info("Inside method with length");
                     if(true) throw new RuntimeException("Faking an error.");
                     return "length was "+lengthOfName;
@@ -86,9 +86,9 @@ public class LearnMultithreadingApplication {
         CompletableFuture<String> nameFuture = CompletableFuture.supplyAsync(() -> getName());
         CompletableFuture<String> addressFuture = CompletableFuture.supplyAsync(() -> getAddress());
 
-        CompletableFuture.allOf(nameFuture, addressFuture)
+        CompletableFuture.allOf(nameFuture, addressFuture) // combine both future name and address
                         .thenAccept((v) -> {
-                            log.info("Got the name: {} and address here: {}", nameFuture.join(), addressFuture.join());
+                            log.info("Got the name: {} and address here: {}", nameFuture.join(), addressFuture.join()); // we use join bcz get() throw exception and we need to handle
                         });
 
 //        log.info("Got the name: {} and address here: {}", nameFuture.join(), addressFuture.join());
@@ -101,7 +101,7 @@ public class LearnMultithreadingApplication {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return "MD";
+        return "md";
     }
 
     static String getAddress() {

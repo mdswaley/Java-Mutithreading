@@ -59,18 +59,19 @@ public class LearnMultithreadingApplication {
 
 
     static void learnCompletableFuture() {
+
         CompletableFuture<String> myNameCF = CompletableFuture
                 .supplyAsync(() -> getName())
-                        .thenApply(name -> name.toUpperCase())
-                                .thenApply(upperCaseName -> upperCaseName.length())
-                                        .thenApplyAsync(lengthOfName -> {
-                                            log.info("Inside method with length");
-                                            if(true) throw new RuntimeException("Faking an error.");
-                                            return "length was "+lengthOfName;
-                                        })
-                                                .exceptionally((err) -> {
-                                                    return "Default value in case of failure";
-                                                });
+                .thenApply(name -> name.toUpperCase())
+                .thenApply(upperCaseName -> upperCaseName.length())
+                .thenApplyAsync(lengthOfName -> {
+                    log.info("Inside method with length");
+                    if(true) throw new RuntimeException("Faking an error.");
+                    return "length was "+lengthOfName;
+                })
+                .exceptionally((err) -> {
+                    return "Default value in case of failure";
+                });
 
         myNameCF.thenAccept(name -> {
             log.info("Got the name length: {}", name);

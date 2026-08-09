@@ -83,8 +83,9 @@ public class LearnMultithreadingApplication {
     }
 
     static void learnCF2() {
-        CompletableFuture<String> nameFuture = CompletableFuture.supplyAsync(() -> getName());
-        CompletableFuture<String> addressFuture = CompletableFuture.supplyAsync(() -> getAddress());
+        CompletableFuture<String> nameFuture = CompletableFuture.supplyAsync(() -> getName()); // this take 5s
+        CompletableFuture<String> addressFuture = CompletableFuture.supplyAsync(() -> getAddress()); // this take 2s
+//        overall it will take 5s bcz both future are running parallel with different thread so max time it will wait
 
         CompletableFuture.allOf(nameFuture, addressFuture) // combine both future name and address
                         .thenAccept((v) -> {

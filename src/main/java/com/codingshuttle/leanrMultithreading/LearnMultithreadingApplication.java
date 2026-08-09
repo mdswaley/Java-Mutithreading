@@ -14,12 +14,16 @@ public class LearnMultithreadingApplication {
 		SpringApplication.run(LearnMultithreadingApplication.class, args);
 
 
+//        Here Main thread is block until not get the result from future
 //        learnFuture();
 
-//        learnCompletableFuture();
+//        Here out main thread is free after calling method learCompletableFuture() there is no blocking.
+        learnCompletableFuture();
 
-        learnCF2();
+//        learnCF2();
 
+//        for future -> it run after method complete bcz main thread is block
+//        for CompletableFuture -> it run instantly bcz main thread is not block
         log.info("After the method call");
     }
 
